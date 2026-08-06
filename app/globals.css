@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root{
+  --background:#050505;
+  --surface:#0B0B0B;
+  --card:#121212;
+
+  --gold:#D4AF37;
+
+  --text:#F5F5F5;
+  --muted:#B8B8B8;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  padding:0;
+
+  background:
+  radial-gradient(circle at top right,
+  rgba(212,175,55,.08),
+  transparent 35%),
+
+  linear-gradient(
+  180deg,
+  #050505 0%,
+  #070912 50%,
+  #050505 100%);
+
+  color:var(--text);
+
+  font-family:var(--font-inter);
+
+  overflow-x:hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+  font-family:var(--font-heading);
+}
+
+button{
+  cursor:pointer;
+  transition:.35s;
+}
+
+section{
+  position:relative;
+}
+
+::selection{
+  background:#D4AF37;
+  color:black;
+}
