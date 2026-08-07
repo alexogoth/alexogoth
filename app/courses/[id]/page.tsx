@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 
@@ -52,9 +53,12 @@ export default async function CoursePage({
               € {course.price}
             </div>
 
-            <button className="mt-8 bg-yellow-400 hover:bg-yellow-300 text-black px-8 py-4 md:px-10 md:py-5 rounded-xl text-lg md:text-xl font-bold transition duration-300">
+            <Link
+              href={`/checkout/${course.id}`}
+              className="inline-flex items-center justify-center mt-8 bg-yellow-400 hover:bg-yellow-300 text-black px-8 py-4 md:px-10 md:py-5 rounded-xl text-lg md:text-xl font-bold transition duration-300"
+            >
               Kupi kurs
-            </button>
+            </Link>
           </div>
         </div>
       </section>
