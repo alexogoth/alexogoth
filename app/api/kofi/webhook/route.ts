@@ -12,37 +12,50 @@ export async function POST(req: Request) {
     const data = JSON.parse(form.get("data") as string);
 
     const email = data.email;
-    const courseId = data.shop_item_name;
+    const productCode = data.shop_item_id;
 
-    if (!email || !courseId) {
+    if (!email || !productCode) {
       return NextResponse.json(
-        { error: "Nedostaju podaci." },
+        { error: "Missing data" },
         { status: 400 }
       );
     }
 
-    const { data: users, error: userError } =
+    // Pronađi kurs po Ko-fi kodu
+    const { data: course, error: courseError } = await supabase
+      .from("courses")
+      .select("id")
+      .eq("kofi_product_code", productCode)
+      .single();
+
+    if (courseError || !course) {
+      throw new Error("Course not found.");
+    }
+
+    // Pronađi korisnika po emailu
+    const { data: users, error: usersError } =
       await supabase.auth.admin.listUsers();
 
-    if (userError) throw userError;
+    if (usersError) throw usersError;
 
     const user = users.users.find((u) => u.email === email);
 
     if (!user) {
       return NextResponse.json({
         success: true,
-        message: "Korisnik još nije registrovan.",
+        message: "User is not registered yet.",
       });
     }
 
-    const { error } = await supabase
+    // Dodijeli kurs korisniku
+    const { error: insertError } = await supabase
       .from("user_courses")
       .insert({
         user_id: user.id,
-        course_id: courseId,
+        course_id: course.id,
       });
 
-    if (error) throw error;
+    if (insertError) throw insertError;
 
     return NextResponse.json({
       success: true,
