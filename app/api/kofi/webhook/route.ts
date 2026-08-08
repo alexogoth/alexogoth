@@ -9,15 +9,30 @@ const supabase = createClient(
 export async function POST(req: Request) {
   try {
     const form = await req.formData();
-    const data = JSON.parse(form.get("data") as string);
+
+    console.log("FORM:", Object.fromEntries(form.entries()));
+
+    const raw = form.get("data");
+    console.log("RAW:", raw);
+
+    const data = JSON.parse(raw as string);
+    console.log("DATA:", data);
 
     const email = data.email;
-    const productCode = data.shop_item_id;
+
+    const productCode =
+      data.shop_item_id ||
+      data.shop_item_name ||
+      data.kofi_product_code;
 
     if (!email || !productCode) {
       return NextResponse.json(
-        { error: "Missing data" },
-        { status: 400 }
+        {
+          error: "Missing data",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
@@ -29,7 +44,16 @@ export async function POST(req: Request) {
       .single();
 
     if (courseError || !course) {
-      throw new Error("Course not found.");
+      console.error("Course not found:", productCode);
+
+      return NextResponse.json(
+        {
+          error: "Course not found",
+        },
+        {
+          status: 404,
+        }
+      );
     }
 
     // Pronađi korisnika po emailu
@@ -47,7 +71,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // Dodijeli kurs korisniku
+    // Dodijeli kurs
     const { error: insertError } = await supabase
       .from("user_courses")
       .insert({
@@ -61,7 +85,7 @@ export async function POST(req: Request) {
       success: true,
     });
   } catch (err) {
-    console.error(err);
+    console.error("WEBHOOK ERROR:", err);
 
     return NextResponse.json(
       {
