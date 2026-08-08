@@ -20,19 +20,13 @@ export async function POST(req: Request) {
 
     const email = data.email;
 
-    const productCode =
-      data.shop_item_id ||
-      data.shop_item_name ||
-      data.kofi_product_code;
+    // Ko-fi šalje direct_link_code unutar shop_items
+    const productCode = data.shop_items?.[0]?.direct_link_code;
 
     if (!email || !productCode) {
       return NextResponse.json(
-        {
-          error: "Missing data",
-        },
-        {
-          status: 400,
-        }
+        { error: "Missing data" },
+        { status: 400 }
       );
     }
 
@@ -47,12 +41,8 @@ export async function POST(req: Request) {
       console.error("Course not found:", productCode);
 
       return NextResponse.json(
-        {
-          error: "Course not found",
-        },
-        {
-          status: 404,
-        }
+        { error: "Course not found" },
+        { status: 404 }
       );
     }
 
@@ -71,7 +61,7 @@ export async function POST(req: Request) {
       });
     }
 
-    // Dodijeli kurs
+    // Dodijeli kurs korisniku
     const { error: insertError } = await supabase
       .from("user_courses")
       .insert({
