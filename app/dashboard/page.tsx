@@ -5,16 +5,27 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+type User = {
+  id: string;
+  email: string;
+  user_metadata: {
+    full_name?: string;
+  };
+};
+
 type Course = {
   id: string;
   course_id: string;
-  purchased_at: string;
+  title: string;
+  description: string;
+  image: string;
+  price: number;
 };
 
 export default function Dashboard() {
   const router = useRouter();
 
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,14 +40,17 @@ export default function Dashboard() {
         return;
       }
 
-      setUser(user);
+      setUser(user as User);
 
-      const { data } = await supabase
-        .from("user_courses")
+      const { data, error } = await supabase
+        .from("user_courses_view")
         .select("*")
         .eq("user_id", user.id);
 
-      setCourses(data || []);
+      if (!error && data) {
+        setCourses(data as Course[]);
+      }
+
       setLoading(false);
     }
 
@@ -50,16 +64,15 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#040404] flex items-center justify-center text-white">
-        Učitavanje...
+      <main className="min-h-screen bg-black text-white flex items-center justify-center">
+        <h1 className="text-2xl">Učitavanje...</h1>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#040404] text-white pt-32 px-6">
-      <div className="max-w-7xl mx-auto">
-
+    <main className="min-h-screen bg-black text-white">
+      <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="flex justify-between items-center mb-12">
           <div>
             <h1 className="text-5xl font-bold text-yellow-300">
@@ -67,7 +80,7 @@ export default function Dashboard() {
             </h1>
 
             <p className="mt-3 text-yellow-400 text-xl">
-              {user.user_metadata?.full_name || user.email}
+              {user?.user_metadata?.full_name || user?.email}
             </p>
           </div>
 
@@ -80,7 +93,6 @@ export default function Dashboard() {
         </div>
 
         <div className="bg-[#0b0f1d] border border-yellow-500/20 rounded-3xl p-8">
-
           <h2 className="text-3xl font-bold text-yellow-300 mb-8">
             📚 Moji kursevi
           </h2>
@@ -107,11 +119,11 @@ export default function Dashboard() {
                 >
                   <div>
                     <h3 className="text-2xl font-bold text-yellow-300">
-                      {course.course_id}
+                      {course.title}
                     </h3>
 
                     <p className="text-gray-400 mt-2">
-                      Kupljen kurs
+                      € {course.price}
                     </p>
                   </div>
 
@@ -125,9 +137,7 @@ export default function Dashboard() {
               ))}
             </div>
           )}
-
         </div>
-
       </div>
     </main>
   );
