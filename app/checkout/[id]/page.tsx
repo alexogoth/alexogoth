@@ -34,14 +34,26 @@ export default async function CheckoutPage({
           € {course.price}
         </p>
 
-        <a
-          href={course.kofi_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block w-full text-center bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 rounded-xl transition"
-        >
-          Nastavi na plaćanje
-        </a>
+        {course.kofi_url ? (
+          <a
+            href={course.kofi_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full text-center bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 rounded-xl transition"
+          >
+            Nastavi na plaćanje
+          </a>
+        ) : (
+          <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-center">
+            <p className="text-red-400 font-semibold">
+              Plaćanje trenutno nije dostupno.
+            </p>
+
+            <p className="text-gray-400 text-sm mt-2">
+              Ko-fi link nije postavljen za ovaj kurs.
+            </p>
+          </div>
+        )}
 
       </div>
     </main>
