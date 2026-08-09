@@ -1,11 +1,57 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function AdminPage() {
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    async function checkAdmin() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile || profile.role !== "admin") {
+        router.push("/dashboard");
+        return;
+      }
+
+      setAllowed(true);
+      setLoading(false);
+    }
+
+    checkAdmin();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-black text-white flex items-center justify-center">
+        <h1 className="text-3xl font-bold">Učitavanje...</h1>
+      </main>
+    );
+  }
+
+  if (!allowed) return null;
+
   return (
     <main className="min-h-screen bg-black text-white p-10">
-
       <div className="max-w-7xl mx-auto">
 
         <h1 className="text-5xl font-bold text-yellow-300 mb-10">
@@ -60,7 +106,6 @@ export default function AdminPage() {
         </div>
 
       </div>
-
     </main>
   );
 }
