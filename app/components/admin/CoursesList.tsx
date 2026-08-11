@@ -59,7 +59,14 @@ export default function CoursesList({ courses }: Props) {
                   Uredi
                 </Link>
 
-                <button className="bg-red-500 hover:bg-red-600 px-5 py-2 rounded-lg font-bold">
+                <Link
+                  href={`/admin/courses/${course.id}/lessons`}
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg font-bold"
+                >
+                  Lekcije
+                </Link>
+
+                <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-bold">
                   Obriši
                 </button>
               </div>
