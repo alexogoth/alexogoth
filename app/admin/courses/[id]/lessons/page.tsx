@@ -116,9 +116,12 @@ export default function LessonsPage() {
                 </div>
 
                 <div className="flex gap-3">
-                  <button className="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-lg font-bold">
-                    Uredi
-                  </button>
+                  <Link
+  href={`/admin/courses/${id}/lessons/${lesson.id}`}
+  className="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-lg font-bold"
+>
+  Uredi
+</Link>
 
                   <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-bold">
                     Obriši
