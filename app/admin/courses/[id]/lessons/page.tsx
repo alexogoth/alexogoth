@@ -24,35 +24,57 @@ export default function LessonsPage() {
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
-    useEffect(() => {
     async function loadLessons() {
-      const { data: courseData, error: courseError } = await supabase
-        .from("courses")
-        .select("id, title")
-        .eq("id", id)
-        .single();
+    const { data: courseData, error: courseError } = await supabase
+      .from("courses")
+      .select("id, title")
+      .eq("id", id)
+      .single();
 
-      if (courseError) {
-        console.error(courseError);
-      } else {
-        setCourse(courseData);
-      }
-
-      const { data: lessonsData, error: lessonsError } = await supabase
-        .from("lessons")
-        .select("*")
-        .eq("course_id", id)
-        .order("position", { ascending: true });
-
-      if (lessonsError) {
-        console.error(lessonsError);
-      } else {
-        setLessons(lessonsData || []);
-      }
-
-      setLoading(false);
+    if (courseError) {
+      console.error(courseError);
+    } else {
+      setCourse(courseData);
     }
 
+    const { data: lessonsData, error: lessonsError } = await supabase
+      .from("lessons")
+      .select("*")
+      .eq("course_id", id)
+      .order("position", { ascending: true });
+
+    if (lessonsError) {
+      console.error(lessonsError);
+    } else {
+      setLessons(lessonsData || []);
+    }
+
+    setLoading(false);
+  }
+
+  async function deleteLesson(lessonId: string) {
+    const confirmed = window.confirm(
+      "Da li ste sigurni da želite obrisati ovu lekciju?"
+    );
+
+    if (!confirmed) return;
+
+    const { error } = await supabase
+      .from("lessons")
+      .delete()
+      .eq("id", lessonId);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    setLessons((current) =>
+      current.filter((lesson) => lesson.id !== lessonId)
+    );
+  }
+
+  useEffect(() => {
     if (id) {
       loadLessons();
     }
@@ -96,7 +118,7 @@ export default function LessonsPage() {
           </div>
         ) : (
           <div className="grid gap-5">
-            {lessons.map((lesson) => (
+                      {lessons.map((lesson) => (
               <div
                 key={lesson.id}
                 className="bg-[#111827] rounded-2xl p-6 border border-yellow-500/20 flex justify-between items-center"
@@ -117,13 +139,16 @@ export default function LessonsPage() {
 
                 <div className="flex gap-3">
                   <Link
-  href={`/admin/courses/${id}/lessons/${lesson.id}`}
-  className="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-lg font-bold"
->
-  Uredi
-</Link>
+                    href={`/admin/courses/${id}/lessons/${lesson.id}`}
+                    className="bg-yellow-400 hover:bg-yellow-300 text-black px-5 py-2 rounded-lg font-bold"
+                  >
+                    Uredi
+                  </Link>
 
-                  <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-bold">
+                  <button
+                    onClick={() => deleteLesson(lesson.id)}
+                    className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-bold"
+                  >
                     Obriši
                   </button>
                 </div>
@@ -135,4 +160,4 @@ export default function LessonsPage() {
       </div>
     </main>
   );
-}
+}  
