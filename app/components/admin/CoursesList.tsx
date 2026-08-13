@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 type Course = {
   id: string;
@@ -15,8 +17,32 @@ type Props = {
 };
 
 export default function CoursesList({ courses }: Props) {
+  const [courseList, setCourseList] = useState(courses);
+    async function deleteCourse(courseId: string) {
+    const confirmed = window.confirm(
+      "Da li ste sigurni da želite obrisati ovaj kurs? Sve lekcije ovog kursa će također biti obrisane."
+    );
+
+    if (!confirmed) return;
+
+    const { error } = await supabase
+      .from("courses")
+      .delete()
+      .eq("id", courseId);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    setCourseList((current) =>
+      current.filter((course) => course.id !== courseId)
+    );
+  }
+
   return (
     <div className="bg-[#111827] rounded-2xl p-8 border border-yellow-500/20">
+
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl font-bold text-yellow-300">
           Kursevi
@@ -30,13 +56,13 @@ export default function CoursesList({ courses }: Props) {
         </Link>
       </div>
 
-      {courses.length === 0 ? (
+      {courseList.length === 0 ? (
         <p className="text-gray-400">
           Trenutno nema kurseva.
         </p>
       ) : (
         <div className="grid gap-6">
-          {courses.map((course) => (
+                    {courseList.map((course) => (
             <div
               key={course.id}
               className="bg-black rounded-2xl p-6 border border-yellow-500/20 flex justify-between items-center"
@@ -66,13 +92,16 @@ export default function CoursesList({ courses }: Props) {
                   Lekcije
                 </Link>
 
-                <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-bold">
+                <button
+                  onClick={() => deleteCourse(course.id)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-bold"
+                >
                   Obriši
                 </button>
               </div>
             </div>
           ))}
-        </div>
+                  </div>
       )}
     </div>
   );
