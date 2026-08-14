@@ -12,6 +12,7 @@ export default function EditCoursePage() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [category, setCategory] = useState("");
   const [kofiUrl, setKofiUrl] = useState("");
   const [productCode, setProductCode] = useState("");
@@ -52,6 +53,29 @@ export default function EditCoursePage() {
     e.preventDefault();
 
     setSaving(true);
+    let imageUrl = image;
+
+if (imageFile) {
+  const fileName = `${Date.now()}-${imageFile.name}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("course-images")
+    .upload(fileName, imageFile);
+
+  if (uploadError) {
+    alert(uploadError.message);
+    setSaving(false);
+    return;
+  }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from("course-images")
+    .getPublicUrl(fileName);
+
+  imageUrl = publicUrl;
+}
 
     const { error } = await supabase
       .from("courses")
@@ -59,7 +83,7 @@ export default function EditCoursePage() {
         title,
         description,
         price: Number(price),
-        image,
+        image: imageUrl,
         category,
         kofi_url: kofiUrl,
         kofi_product_code: productCode,
@@ -130,14 +154,33 @@ export default function EditCoursePage() {
           </div>
 
           <div>
-            <label className="block mb-2">URL slike</label>
-            <input
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="w-full p-4 rounded-xl bg-black border border-gray-700"
-              required
-            />
-          </div>
+  <label className="block mb-2">Slika kursa</label>
+
+  {image && image.startsWith("http") && (
+    <img
+      src={image}
+      alt={title}
+      className="w-48 h-32 object-cover rounded-xl border border-yellow-500/20 mb-4"
+    />
+  )}
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        setImageFile(e.target.files[0]);
+      }
+    }}
+    className="w-full p-4 rounded-xl bg-black border border-gray-700"
+  />
+
+  {imageFile && (
+    <p className="mt-2 text-green-400">
+      Nova slika: {imageFile.name}
+    </p>
+  )}
+</div>
 
           <div>
             <label className="block mb-2">Kategorija</label>

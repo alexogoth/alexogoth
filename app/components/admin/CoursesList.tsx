@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 
 type Course = {
@@ -67,15 +68,29 @@ export default function CoursesList({ courses }: Props) {
               key={course.id}
               className="bg-black rounded-2xl p-6 border border-yellow-500/20 flex justify-between items-center"
             >
-              <div>
-                <h3 className="text-2xl font-bold text-yellow-300">
-                  {course.title}
-                </h3>
+              <div className="flex items-center gap-5">
 
-                <p className="text-gray-400 mt-2">
-                  € {course.price}
-                </p>
-              </div>
+  {course.image?.startsWith("http") && (
+  <Image
+    src={course.image}
+    alt={course.title}
+    width={120}
+    height={80}
+    className="rounded-xl object-cover border border-yellow-500/20"
+  />
+)}
+
+  <div>
+    <h3 className="text-2xl font-bold text-yellow-300">
+      {course.title}
+    </h3>
+
+    <p className="text-gray-400 mt-2">
+      € {course.price}
+    </p>
+  </div>
+
+</div>
 
               <div className="flex gap-3">
                 <Link

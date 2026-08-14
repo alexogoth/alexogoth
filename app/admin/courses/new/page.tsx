@@ -10,16 +10,39 @@ export default function NewCoursePage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
   const [kofiUrl, setKofiUrl] = useState("");
   const [productCode, setProductCode] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function createCourse(e: React.FormEvent) {
     e.preventDefault();
 
     setLoading(true);
+    if (!imageFile) {
+  alert("Odaberi sliku.");
+  setLoading(false);
+  return;
+}
+
+const fileName = `${Date.now()}-${imageFile.name}`;
+
+const { error: uploadError } = await supabase.storage
+  .from("course-images")
+  .upload(fileName, imageFile);
+
+if (uploadError) {
+  alert(uploadError.message);
+  setLoading(false);
+  return;
+}
+
+const {
+  data: { publicUrl },
+} = supabase.storage
+  .from("course-images")
+  .getPublicUrl(fileName);
 
     const { error } = await supabase
       .from("courses")
@@ -27,7 +50,7 @@ export default function NewCoursePage() {
         title,
         description,
         price: Number(price),
-        image: image,
+        image: publicUrl,
         category,
         kofi_url: kofiUrl,
         kofi_product_code: productCode,
@@ -90,14 +113,26 @@ export default function NewCoursePage() {
           </div>
 
           <div>
-            <label className="block mb-2">URL slike</label>
-            <input
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="w-full p-4 rounded-xl bg-black border border-gray-700"
-              required
-            />
-          </div>
+  <label className="block mb-2">Slika kursa</label>
+
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        setImageFile(e.target.files[0]);
+      }
+    }}
+    className="w-full p-4 rounded-xl bg-black border border-gray-700"
+    required
+  />
+
+  {imageFile && (
+    <p className="mt-2 text-green-400">
+      Odabrana slika: {imageFile.name}
+    </p>
+  )}
+</div>
 
           <div>
             <label className="block mb-2">Kategorija</label>
