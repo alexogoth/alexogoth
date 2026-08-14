@@ -25,12 +25,16 @@ export default async function CoursePage({
       {/* HERO */}
       <section className="relative min-h-screen">
         <Image
-          src={`/${course.image}`}
-          alt={course.title}
-          fill
-          priority
-          className="object-cover"
-        />
+  src={
+    course.image.startsWith("http")
+      ? course.image
+      : `/${course.image}`
+  }
+  alt={course.title}
+  fill
+  priority
+  className="object-cover"
+/>
 
         <div className="absolute inset-0 bg-black/60" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />

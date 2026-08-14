@@ -18,8 +18,8 @@ export default function About() {
           </h2>
 
           <p className="mt-8 text-gray-300 text-xl leading-9">
-            Alexogoth Akademija je mjesto gdje se spajaju znanje,
-            praksa i unutrašnji razvoj.
+            Akademiju magije, alhemije, ličnog razvoja
+            i praktične duhovnosti.
           </p>
 
           <p className="mt-6 text-gray-400 leading-8">

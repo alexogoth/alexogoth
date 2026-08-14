@@ -51,7 +51,7 @@ export default function Courses() {
           </h2>
 
           <p className="text-gray-400 mt-6 text-xl max-w-3xl mx-auto">
-            Dva programa kreirana da Vas vode kroz unutrašnji razvoj,
+            Programi kreirani da Vas vode kroz unutrašnji razvoj,
             manifestaciju i svjesno kreiranje vlastite realnosti.
           </p>
         </div>
@@ -69,11 +69,15 @@ export default function Courses() {
               >
                 <div className="relative h-72">
                   <Image
-                    src={`/${course.image}`}
-                    alt={course.title}
-                    fill
-                    className="object-cover"
-                  />
+  src={
+    course.image.startsWith("http")
+      ? course.image
+      : `/${course.image}`
+  }
+  alt={course.title}
+  fill
+  className="object-cover"
+/>
                 </div>
 
                 <div className="p-10">
