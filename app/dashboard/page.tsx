@@ -128,7 +128,7 @@ export default function Dashboard() {
                   </div>
 
                   <Link
-                    href={`/courses/${course.course_id}`}
+                   href={`/dashboard/course/${course.course_id}`}
                     className="bg-yellow-400 hover:bg-yellow-300 text-black px-6 py-3 rounded-xl font-bold"
                   >
                     Nastavi kurs
