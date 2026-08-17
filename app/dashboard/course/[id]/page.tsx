@@ -16,6 +16,10 @@ type Lesson = {
   video_url: string;
   position: number;
 };
+type LessonProgress = {
+  lesson_id: string;
+  completed: boolean;
+};
 
 export default function CoursePlayerPage() {
   const { id } = useParams();
@@ -25,8 +29,27 @@ export default function CoursePlayerPage() {
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
 
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState<LessonProgress[]>([]);
+const [userId, setUserId] = useState("");
     useEffect(() => {
     async function loadCourse() {
+      const {
+  data: { user },
+} = await supabase.auth.getUser();
+
+if (user) {
+  setUserId(user.id);
+
+  const { data: progressData } = await supabase
+    .from("lesson_progress")
+    .select("lesson_id, completed")
+    .eq("user_id", user.id)
+    .eq("course_id", id);
+
+  if (progressData) {
+    setProgress(progressData);
+  }
+}
       const { data: courseData } = await supabase
         .from("courses")
         .select("id,title")
@@ -103,6 +126,51 @@ function goToPreviousLesson() {
     setCurrentLesson(lessons[index - 1]);
   }
 }
+async function markLessonCompleted() {
+  if (!currentLesson || !userId) return;
+
+  const { error } = await supabase
+    .from("lesson_progress")
+    .upsert(
+      {
+        user_id: userId,
+        course_id: id,
+        lesson_id: currentLesson.id,
+        completed: true,
+        completed_at: new Date().toISOString(),
+      },
+      {
+        onConflict: "user_id,lesson_id",
+      }
+    );
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  setProgress((prev) => {
+    const exists = prev.find(
+      (p) => p.lesson_id === currentLesson.id
+    );
+
+    if (exists) {
+      return prev.map((p) =>
+        p.lesson_id === currentLesson.id
+          ? { ...p, completed: true }
+          : p
+      );
+    }
+
+    return [
+      ...prev,
+      {
+        lesson_id: currentLesson.id,
+        completed: true,
+      },
+    ];
+  });
+}
 return (
   <main className="min-h-screen bg-black text-white">
 
@@ -135,6 +203,14 @@ return (
               <p className="text-gray-400 mt-4 leading-8">
                 {currentLesson.description}
               </p>
+              <div className="mt-8">
+  <button
+    onClick={markLessonCompleted}
+    className="bg-green-600 hover:bg-green-500 px-6 py-3 rounded-xl font-bold"
+  >
+    ✓ Označi lekciju kao završenu
+  </button>
+</div>
               <div className="flex justify-between mt-8">
 
   <button
@@ -184,9 +260,17 @@ return (
                     : "bg-black hover:bg-gray-900 text-white"
                 }`}
               >
-                <p className="font-bold">
-                  Lekcija {lesson.position}
-                </p>
+                <p className="font-bold flex items-center gap-2">
+  {progress.some(
+    (item) =>
+      item.lesson_id === lesson.id &&
+      item.completed
+  ) && (
+    <span className="text-green-400">✓</span>
+  )}
+
+  Lekcija {lesson.position}
+</p>
 
                 <p className="mt-1">
                   {lesson.title}
