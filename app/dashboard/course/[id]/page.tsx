@@ -171,6 +171,16 @@ async function markLessonCompleted() {
     ];
   });
 }
+const completedLessons = progress.filter(
+  (lesson) => lesson.completed
+).length;
+
+const totalLessons = lessons.length;
+
+const progressPercentage =
+  totalLessons === 0
+    ? 0
+    : Math.round((completedLessons / totalLessons) * 100);
 return (
   <main className="min-h-screen bg-black text-white">
 
@@ -179,6 +189,32 @@ return (
       <h1 className="text-5xl font-bold text-yellow-300 mb-10">
         {course?.title}
       </h1>
+      <div className="mb-10">
+
+  <div className="flex justify-between mb-2 text-sm text-gray-400">
+    <span>
+      Napredak
+    </span>
+
+    <span>
+      {completedLessons} / {totalLessons} lekcija
+    </span>
+  </div>
+
+  <div className="w-full h-4 bg-gray-800 rounded-full overflow-hidden">
+    <div
+      className="h-full bg-yellow-400 transition-all duration-500"
+      style={{
+        width: `${progressPercentage}%`,
+      }}
+    />
+  </div>
+
+  <p className="mt-3 text-yellow-300 font-bold">
+    {progressPercentage}% završeno
+  </p>
+
+</div>
 
       <div className="grid lg:grid-cols-3 gap-10">
 
