@@ -16,9 +16,11 @@ type Lesson = {
   video_url: string;
   position: number;
 };
+
 type LessonProgress = {
   lesson_id: string;
   completed: boolean;
+  last_viewed_at: string | null;
 };
 
 export default function CoursePlayerPage() {
@@ -40,15 +42,15 @@ const [userId, setUserId] = useState("");
 if (user) {
   setUserId(user.id);
 
-  const { data: progressData } = await supabase
-    .from("lesson_progress")
-    .select("lesson_id, completed")
-    .eq("user_id", user.id)
-    .eq("course_id", id);
+ const { data: progressData } = await supabase
+  .from("lesson_progress")
+  .select("lesson_id, completed, last_viewed_at")
+  .eq("user_id", user.id)
+  .eq("course_id", id);
 
-  if (progressData) {
-    setProgress(progressData);
-  }
+const userProgress: LessonProgress[] = progressData ?? [];
+
+setProgress(userProgress);
 }
       const { data: courseData } = await supabase
         .from("courses")
@@ -67,12 +69,26 @@ if (user) {
         .order("position", { ascending: true });
 
       if (lessonsData) {
-        setLessons(lessonsData);
+  setLessons(lessonsData);
 
-        if (lessonsData.length > 0) {
-          setCurrentLesson(lessonsData[0]);
-        }
-      }
+  if (lessonsData.length > 0) {
+    const completedLessonIds = new Set(
+      progress
+        .filter((item) => item.completed)
+        .map((item) => item.lesson_id)
+    );
+
+    const firstUnfinished = lessonsData.find(
+      (lesson) => !completedLessonIds.has(lesson.id)
+    );
+
+    if (firstUnfinished) {
+      setCurrentLesson(firstUnfinished);
+    } else {
+      setCurrentLesson(lessonsData[lessonsData.length - 1]);
+    }
+  }
+}
 
       setLoading(false);
     }
@@ -163,12 +179,13 @@ async function markLessonCompleted() {
     }
 
     return [
-      ...prev,
-      {
-        lesson_id: currentLesson.id,
-        completed: true,
-      },
-    ];
+  ...prev,
+  {
+    lesson_id: currentLesson.id,
+    completed: true,
+    last_viewed_at: new Date().toISOString(),
+  },
+];
   });
 }
 const completedLessons = progress.filter(
@@ -289,7 +306,25 @@ return (
                         {lessons.map((lesson) => (
               <button
                 key={lesson.id}
-                onClick={() => setCurrentLesson(lesson)}
+                onClick={async () => {
+  setCurrentLesson(lesson);
+
+  if (userId) {
+    await supabase
+      .from("lesson_progress")
+      .upsert(
+        {
+          user_id: userId,
+          course_id: id,
+          lesson_id: lesson.id,
+          last_viewed_at: new Date().toISOString(),
+        },
+        {
+          onConflict: "user_id,lesson_id",
+        }
+      );
+  }
+}}
                 className={`w-full text-left p-4 rounded-xl transition ${
                   currentLesson?.id === lesson.id
                     ? "bg-yellow-400 text-black"
