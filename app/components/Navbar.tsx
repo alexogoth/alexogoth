@@ -81,27 +81,47 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   ☰
 </button>
 {mobileMenuOpen && (
-  <div className="lg:hidden absolute top-20 left-0 w-full bg-black border-t border-yellow-500/20 p-6 space-y-4">
+  <div className="lg:hidden absolute top-20 left-0 w-full bg-black border-t border-yellow-500/20 p-6 flex flex-col gap-5">
 
-    <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-      Početna
-    </Link>
+    <Link
+  href="/"
+  onClick={() => setMobileMenuOpen(false)}
+  className="text-xl text-white hover:text-yellow-400 transition"
+>
+  Početna
+</Link>
 
-    <a href="#about" onClick={() => setMobileMenuOpen(false)}>
-      Akademija
-    </a>
+    <Link
+  href="/"
+  onClick={() => setMobileMenuOpen(false)}
+  className="text-xl text-white hover:text-yellow-400 transition"
+>
+  Akademija
+</Link>
 
-    <a href="#courses" onClick={() => setMobileMenuOpen(false)}>
-      Kursevi
-    </a>
+    <Link
+  href="/"
+  onClick={() => setMobileMenuOpen(false)}
+  className="text-xl text-white hover:text-yellow-400 transition"
+>
+  Kursevi
+</Link>
 
-    <a href="#faq" onClick={() => setMobileMenuOpen(false)}>
-      FAQ
-    </a>
+    <Link
+  href="/"
+  onClick={() => setMobileMenuOpen(false)}
+  className="text-xl text-white hover:text-yellow-400 transition"
+>
+  FAQ
+</Link>
 
-    <a href="#kontakt" onClick={() => setMobileMenuOpen(false)}>
-      Kontakt
-    </a>
+    <Link
+  href="/"
+  onClick={() => setMobileMenuOpen(false)}
+  className="text-xl text-white hover:text-yellow-400 transition"
+>
+  Kontakt
+</Link>
 
   </div>
 )}
