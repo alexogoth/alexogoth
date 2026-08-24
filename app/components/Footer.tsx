@@ -34,13 +34,13 @@ export default function Footer() {
 
             <div className="flex flex-col gap-4 text-gray-400">
 
-              <a href="#">Početna</a>
+              <a href="/">Početna</a>
 
-              <a href="#about">Akademija</a>
+<a href="/#about">Akademija</a>
 
-              <a href="#courses">Kursevi</a>
+<a href="/#courses">Kursevi</a>
 
-              <a href="#faq">FAQ</a>
+<a href="/#faq">FAQ</a>
 
             </div>
 
@@ -54,13 +54,34 @@ export default function Footer() {
               Kontakt
             </h3>
 
-            <div className="space-y-4 text-gray-400">
+            <div className="flex flex-col gap-4 text-gray-400">
 
-              <p>info@alexogoth.com</p>
+              <a
+  href="mailto:tarot.x@yahoo.com"
+  className="hover:text-yellow-400 transition"
+>
+  info@alexogoth.com
+</a>
 
-              <p>Instagram</p>
 
-              <p>YouTube</p>
+<a
+  href="https://www.instagram.com/alexogoth9"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-yellow-400 transition"
+>
+  Instagram
+</a>
+
+
+<a
+  href="https://www.youtube.com/@alexogoth"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-yellow-400 transition"
+>
+  YouTube
+</a>
 
             </div>
 

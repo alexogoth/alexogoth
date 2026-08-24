@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -37,13 +38,19 @@ export default function Hero() {
 
         <div className="mt-14 flex flex-col sm:flex-row justify-center gap-6">
 
-          <button className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-10 py-4 rounded-xl transition duration-300 shadow-lg shadow-yellow-500/30">
-            Istraži kurseve
-          </button>
+          <Link
+  href="/#courses"
+  className="bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-10 py-4 rounded-xl transition duration-300 shadow-lg shadow-yellow-500/30"
+>
+  Istraži kurseve
+</Link>
 
-          <button className="border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-bold px-10 py-4 rounded-xl transition duration-300">
-            O Akademiji
-          </button>
+          <Link
+  href="/#about"
+  className="border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-bold px-10 py-4 rounded-xl transition duration-300"
+>
+  O Akademiji
+</Link>
 
         </div>
 

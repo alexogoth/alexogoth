@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function About() {
   return (
     <section
@@ -30,9 +31,12 @@ export default function About() {
             život kakav želite.
           </p>
 
-          <button className="mt-10 bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-8 py-4 rounded-xl transition">
-            Saznajte više
-          </button>
+          <Link
+  href="/#courses"
+  className="inline-block mt-10 bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-8 py-4 rounded-xl transition"
+>
+  Saznajte više
+</Link>
 
         </div>
 
