@@ -123,6 +123,48 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   Kontakt
 </a>
 
+<hr className="border-yellow-500/20 my-2" />
+
+{!user ? (
+  <>
+    <Link
+      href="/login"
+      onClick={() => setMobileMenuOpen(false)}
+      className="text-xl text-white hover:text-yellow-400 transition"
+    >
+      Prijava
+    </Link>
+
+    <Link
+      href="/register"
+      onClick={() => setMobileMenuOpen(false)}
+      className="text-xl text-white hover:text-yellow-400 transition"
+    >
+      Registracija
+    </Link>
+  </>
+) : (
+  <>
+    <Link
+      href="/dashboard"
+      onClick={() => setMobileMenuOpen(false)}
+      className="text-xl text-white hover:text-yellow-400 transition"
+    >
+      Dashboard
+    </Link>
+
+    <button
+      onClick={async () => {
+        setMobileMenuOpen(false);
+        await handleLogout();
+      }}
+      className="text-left text-xl text-red-400 hover:text-red-300 transition"
+    >
+      Odjava
+    </button>
+  </>
+)}
+
   </div>
 )}
 
