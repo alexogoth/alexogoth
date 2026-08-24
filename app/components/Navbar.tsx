@@ -91,32 +91,32 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   Početna
 </Link>
 
-    <a
-  href="/"
+<a
+  href="/#about"
   onClick={() => setMobileMenuOpen(false)}
   className="text-xl text-white hover:text-yellow-400 transition"
 >
   Akademija
 </a>
 
-    <a
-  href="/"
+<a
+  href="/#courses"
   onClick={() => setMobileMenuOpen(false)}
   className="text-xl text-white hover:text-yellow-400 transition"
 >
   Kursevi
 </a>
 
-    <a
-  href="/"
+<a
+  href="/#faq"
   onClick={() => setMobileMenuOpen(false)}
   className="text-xl text-white hover:text-yellow-400 transition"
 >
   FAQ
 </a>
 
-    <a
-  href="/"
+<a
+  href="/#kontakt"
   onClick={() => setMobileMenuOpen(false)}
   className="text-xl text-white hover:text-yellow-400 transition"
 >
