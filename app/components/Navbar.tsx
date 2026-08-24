@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase";
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null);
+const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     async function getUser() {
@@ -56,6 +57,7 @@ export default function Navbar() {
             Početna
           </Link>
 
+
           <a href="#about" className="hover:text-yellow-400 transition">
             Akademija
           </a>
@@ -72,9 +74,40 @@ export default function Navbar() {
             Kontakt
           </a>
         </nav>
+        <button
+  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+  className="lg:hidden text-yellow-400 text-3xl"
+>
+  ☰
+</button>
+{mobileMenuOpen && (
+  <div className="lg:hidden absolute top-20 left-0 w-full bg-black border-t border-yellow-500/20 p-6 space-y-4">
+
+    <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+      Početna
+    </Link>
+
+    <a href="#about" onClick={() => setMobileMenuOpen(false)}>
+      Akademija
+    </a>
+
+    <a href="#courses" onClick={() => setMobileMenuOpen(false)}>
+      Kursevi
+    </a>
+
+    <a href="#faq" onClick={() => setMobileMenuOpen(false)}>
+      FAQ
+    </a>
+
+    <a href="#kontakt" onClick={() => setMobileMenuOpen(false)}>
+      Kontakt
+    </a>
+
+  </div>
+)}
 
         {!user ? (
-          <div className="flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3">
             <Link
               href="/login"
               className="border border-yellow-500 text-yellow-400 px-5 py-2.5 rounded-xl hover:bg-yellow-500 hover:text-black transition"
@@ -90,7 +123,7 @@ export default function Navbar() {
             </Link>
           </div>
         ) : (
-          <div className="flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
 
             <span className="text-yellow-400 font-semibold">
               👤 {user.user_metadata?.full_name || user.email}
