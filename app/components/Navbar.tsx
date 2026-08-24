@@ -83,13 +83,13 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 {mobileMenuOpen && (
   <div className="lg:hidden absolute top-20 left-0 w-full bg-black border-t border-yellow-500/20 p-6 flex flex-col gap-5">
 
-    <a
+    <Link
   href="/"
   onClick={() => setMobileMenuOpen(false)}
   className="text-xl text-white hover:text-yellow-400 transition"
 >
   Početna
-</a>
+</Link>
 
     <a
   href="/"
