@@ -6,7 +6,7 @@ export default function Footer() {
     >
       <div className="max-w-7xl mx-auto px-6 py-20">
 
-        <div className="grid md:grid-cols-3 gap-14">
+        <div className="grid md:grid-cols-4 gap-14">
 
           {/* Logo */}
 
@@ -45,6 +45,39 @@ export default function Footer() {
             </div>
 
           </div>
+
+          <div>
+
+  <h3 className="text-yellow-300 text-xl mb-6">
+    Pravno
+  </h3>
+
+  <div className="flex flex-col gap-4 text-gray-400">
+
+    <a
+      href="/privacy"
+      className="hover:text-yellow-400 transition"
+    >
+      Politika privatnosti
+    </a>
+
+    <a
+      href="/terms"
+      className="hover:text-yellow-400 transition"
+    >
+      Uslovi korištenja
+    </a>
+
+    <a
+      href="/refund"
+      className="hover:text-yellow-400 transition"
+    >
+      Politika povrata
+    </a>
+
+  </div>
+
+</div>
 
           {/* Kontakt */}
 
