@@ -2,26 +2,22 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleReset(e: React.FormEvent) {
     e.preventDefault();
 
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
+    const { error } = await supabase.auth.updateUser({
       password,
     });
 
@@ -31,36 +27,32 @@ export default function LoginPage() {
       return;
     }
 
-    setLoading(false);
+    setMessage("Lozinka je uspješno promijenjena.");
 
-    router.push("/");
+    setTimeout(() => {
+      router.push("/login");
+    }, 2000);
+
+    setLoading(false);
   }
 
   return (
     <main className="min-h-screen bg-[#0b0b0b] flex items-center justify-center px-6">
       <form
-        onSubmit={handleLogin}
+        onSubmit={handleReset}
         className="w-full max-w-md bg-[#161616] border border-zinc-800 rounded-3xl p-8"
       >
         <h1 className="text-4xl font-bold text-center text-white mb-2">
-          Prijava
+          Nova lozinka
         </h1>
 
         <p className="text-center text-gray-400 mb-8">
-          Prijavite se na svoj Alexogoth račun.
+          Unesite novu lozinku za svoj račun.
         </p>
 
         <input
-          type="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-4 mb-4 rounded-xl bg-[#1f1f1f] border border-zinc-700 text-white"
-        />
-
-        <input
           type="password"
-          placeholder="Lozinka"
+          placeholder="Nova lozinka"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-4 mb-6 rounded-xl bg-[#1f1f1f] border border-zinc-700 text-white"
@@ -71,19 +63,11 @@ export default function LoginPage() {
           disabled={loading}
           className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 rounded-xl transition"
         >
-          {loading ? "Prijavljivanje..." : "Prijavite se"}
+          {loading ? "Spremanje..." : "Promijeni lozinku"}
         </button>
-        <div className="mt-5 text-center">
-  <Link
-    href="/forgot-password"
-    className="text-yellow-400 hover:text-yellow-300 transition"
-  >
-    Zaboravili ste lozinku?
-  </Link>
-</div>
 
         {message && (
-          <p className="mt-6 text-center text-red-400">
+          <p className="mt-6 text-center text-gray-300">
             {message}
           </p>
         )}

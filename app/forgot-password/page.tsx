@@ -1,53 +1,46 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
-export default function LoginPage() {
-  const router = useRouter();
-
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleReset(e: React.FormEvent) {
     e.preventDefault();
 
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
     });
 
     if (error) {
       setMessage(error.message);
-      setLoading(false);
-      return;
+    } else {
+      setMessage(
+        "Ako postoji nalog sa ovom email adresom, poslali smo Vam link za reset lozinke."
+      );
     }
 
     setLoading(false);
-
-    router.push("/");
   }
 
   return (
     <main className="min-h-screen bg-[#0b0b0b] flex items-center justify-center px-6">
       <form
-        onSubmit={handleLogin}
+        onSubmit={handleReset}
         className="w-full max-w-md bg-[#161616] border border-zinc-800 rounded-3xl p-8"
       >
         <h1 className="text-4xl font-bold text-center text-white mb-2">
-          Prijava
+          Reset lozinke
         </h1>
 
         <p className="text-center text-gray-400 mb-8">
-          Prijavite se na svoj Alexogoth račun.
+          Unesite email adresu povezanu sa Vašim nalogom.
         </p>
 
         <input
@@ -55,14 +48,6 @@ export default function LoginPage() {
           placeholder="E-mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-4 mb-4 rounded-xl bg-[#1f1f1f] border border-zinc-700 text-white"
-        />
-
-        <input
-          type="password"
-          placeholder="Lozinka"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
           className="w-full p-4 mb-6 rounded-xl bg-[#1f1f1f] border border-zinc-700 text-white"
         />
 
@@ -71,19 +56,11 @@ export default function LoginPage() {
           disabled={loading}
           className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-4 rounded-xl transition"
         >
-          {loading ? "Prijavljivanje..." : "Prijavite se"}
+          {loading ? "Slanje..." : "Pošalji link za reset"}
         </button>
-        <div className="mt-5 text-center">
-  <Link
-    href="/forgot-password"
-    className="text-yellow-400 hover:text-yellow-300 transition"
-  >
-    Zaboravili ste lozinku?
-  </Link>
-</div>
 
         {message && (
-          <p className="mt-6 text-center text-red-400">
+          <p className="mt-6 text-center text-gray-300">
             {message}
           </p>
         )}
