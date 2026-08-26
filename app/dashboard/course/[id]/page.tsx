@@ -39,18 +39,20 @@ const [userId, setUserId] = useState("");
   data: { user },
 } = await supabase.auth.getUser();
 
+let userProgress: LessonProgress[] = [];
+
 if (user) {
   setUserId(user.id);
 
- const { data: progressData } = await supabase
-  .from("lesson_progress")
-  .select("lesson_id, completed, last_viewed_at")
-  .eq("user_id", user.id)
-  .eq("course_id", id);
+  const { data: progressData } = await supabase
+    .from("lesson_progress")
+    .select("lesson_id, completed, last_viewed_at")
+    .eq("user_id", user.id)
+    .eq("course_id", id);
 
-const userProgress: LessonProgress[] = progressData ?? [];
+  userProgress = progressData ?? [];
 
-setProgress(userProgress);
+  setProgress(userProgress);
 }
       const { data: courseData } = await supabase
         .from("courses")
@@ -72,21 +74,25 @@ setProgress(userProgress);
   setLessons(lessonsData);
 
   if (lessonsData.length > 0) {
-    const completedLessonIds = new Set(
-      progress
-        .filter((item) => item.completed)
-        .map((item) => item.lesson_id)
-    );
+    const lastViewed = [...userProgress]
+  .filter((item) => item.last_viewed_at)
+  .sort((a, b) =>
+    (b.last_viewed_at ?? "").localeCompare(a.last_viewed_at ?? "")
+  )[0];
 
-    const firstUnfinished = lessonsData.find(
-      (lesson) => !completedLessonIds.has(lesson.id)
-    );
+if (lastViewed) {
+  const lesson = lessonsData.find(
+    (l) => l.id === lastViewed.lesson_id
+  );
 
-    if (firstUnfinished) {
-      setCurrentLesson(firstUnfinished);
-    } else {
-      setCurrentLesson(lessonsData[lessonsData.length - 1]);
-    }
+  if (lesson) {
+    setCurrentLesson(lesson);
+  } else {
+    setCurrentLesson(lessonsData[0]);
+  }
+} else {
+  setCurrentLesson(lessonsData[0]);
+}
   }
 }
 
