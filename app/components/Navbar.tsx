@@ -47,9 +47,12 @@ const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
             priority
           />
 
-          <span className="text-2xl font-semibold text-white">
-            Alexogoth
-          </span>
+          <span
+  className="text-2xl md:text-3xl font-semibold text-yellow-300"
+  style={{ fontFamily: "var(--font-heading)" }}
+>
+  Alexogoth
+</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8 text-sm uppercase tracking-[0.2em]">
