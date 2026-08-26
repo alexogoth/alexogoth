@@ -26,13 +26,12 @@ export default function Hero() {
           Probudi svoju moć
         </p>
 
-        <h1 className="mt-4 text-4xl md:text-8xl font-bold text-yellow-300 leading-tight font-heading">
-          Alexogoth
-          <br />
-          Akademija
-        </h1>
+        <h1 className="mt-4 text-5xl md:text-8xl font-bold text-yellow-300 leading-tight font-heading">
+  <span className="block md:inline">Alexogoth</span>{" "}
+  <span className="block md:inline">Akademija</span>
+</h1>
 
-        <p className="mt-5 md:mt-8 text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto leading-8 md:leading-10">
+        <p className="mt-5 md:mt-8 text-base md:text-2xl text-gray-300 max-w-2xl mx-auto leading-8 md:leading-10">
           Najveće putovanje nije kroz svijet,
           <br />
           već kroz spoznaju sebe.
