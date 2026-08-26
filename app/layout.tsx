@@ -14,8 +14,49 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Alexogoth Akademija",
-  description: "Online akademija ličnog razvoja",
+  title: {
+    default: "Alexogoth Akademija",
+    template: "%s | Alexogoth Akademija",
+  },
+
+  description:
+    "Alexogoth Akademija je online platforma za lični razvoj, manifestaciju i praktičnu duhovnost kroz profesionalne online kurseve.",
+
+  keywords: [
+    "Alexogoth",
+    "online kursevi",
+    "lični razvoj",
+    "manifestacija",
+    "duhovnost",
+    "online akademija",
+    "samorazvoj",
+    "zakon privlačenja",
+  ],
+
+  authors: [{ name: "Alexogoth" }],
+
+  creator: "Alexogoth",
+
+  applicationName: "Alexogoth Akademija",
+
+  metadataBase: new URL("https://alexogoth.com"),
+
+  openGraph: {
+    title: "Alexogoth Akademija",
+    description:
+      "Online platforma za lični razvoj, manifestaciju i praktičnu duhovnost.",
+    url: "https://alexogoth.com",
+    siteName: "Alexogoth Akademija",
+    locale: "hr_HR",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Alexogoth Akademija",
+    description:
+      "Online platforma za lični razvoj, manifestaciju i praktičnu duhovnost.",
+  },
 };
 
 export default function RootLayout({
