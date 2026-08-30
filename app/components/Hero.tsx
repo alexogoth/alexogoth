@@ -53,14 +53,14 @@ export default function Hero() {
 
             <Link
               href="/#courses"
-              className="w-full sm:w-auto sm:min-w-[220px] bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-8 py-4 rounded-xl transition duration-300 shadow-lg shadow-yellow-500/30 text-center"
+              className="w-full sm:w-auto sm:min-w-[220px] bg-yellow-400 hover:bg-yellow-300 hover:scale-105 active:scale-95 text-black font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-yellow-500/30 text-center"
             >
               Istraži kurseve
             </Link>
 
             <Link
               href="/#about"
-              className="w-full sm:w-auto sm:min-w-[220px] border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-bold px-8 py-4 rounded-xl transition duration-300 text-center"
+              className="w-full sm:w-auto sm:min-w-[220px] border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black hover:scale-105 active:scale-95 font-bold px-8 py-4 rounded-xl transition-all duration-300 text-center"
             >
               O Akademiji
             </Link>

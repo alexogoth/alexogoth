@@ -65,19 +65,23 @@ export default function Courses() {
             {courses.map((course) => (
               <div
                 key={course.id}
-                className="overflow-hidden rounded-3xl border border-yellow-500/20 bg-[#0b0f1d] hover:-translate-y-2 transition-all duration-500"
+                className="overflow-hidden rounded-3xl border border-yellow-500/20 bg-[#0b0f1d]
+                hover:-translate-y-2
+                hover:border-yellow-400/60
+                hover:shadow-[0_0_35px_rgba(250,204,21,0.15)]
+                transition-all duration-300"
               >
-                <div className="relative h-72">
+                <div className="relative h-72 overflow-hidden">
                   <Image
-  src={
-    course.image.startsWith("http")
-      ? course.image
-      : `/${course.image}`
-  }
-  alt={course.title}
-  fill
-  className="object-cover"
-/>
+                    src={
+                      course.image.startsWith("http")
+                        ? course.image
+                        : `/${course.image}`
+                    }
+                    alt={course.title}
+                    fill
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                  />
                 </div>
 
                 <div className="p-10">
@@ -99,7 +103,7 @@ export default function Courses() {
 
                   <Link
                     href={`/courses/${course.id}`}
-                    className="inline-block mt-8 bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-8 py-4 rounded-xl transition"
+                    className="inline-block mt-8 bg-yellow-400 hover:bg-yellow-300 hover:scale-105 active:scale-95 text-black font-bold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg shadow-yellow-500/20"
                   >
                     Pogledajte kurs →
                   </Link>
