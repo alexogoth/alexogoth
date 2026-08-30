@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import FadeIn from "./FadeIn";
 
 export default function Hero() {
   return (
@@ -13,47 +16,57 @@ export default function Hero() {
 
       <div className="relative z-10 text-center px-6 max-w-5xl">
 
-        <Image
-          src="/Logo.png"
-          alt="Alexogoth"
-          width={240}
-          height={240}
-          priority
-          className="mx-auto w-32 md:w-60 h-auto drop-shadow-[0_0_40px_rgba(212,175,55,0.45)]"
-        />
+        <FadeIn>
+          <Image
+            src="/Logo.png"
+            alt="Alexogoth"
+            width={240}
+            height={240}
+            priority
+            className="mx-auto drop-shadow-[0_0_40px_rgba(212,175,55,0.45)]"
+          />
+        </FadeIn>
 
-        <p className="mt-5 md:mt-10 uppercase tracking-[0.35em] md:tracking-[0.45em] text-yellow-400 text-xs md:text-sm">
-          Probudi svoju moć
-        </p>
+        <FadeIn delay={0.15}>
+          <p className="mt-5 md:mt-10 uppercase tracking-[0.35em] md:tracking-[0.45em] text-yellow-400 text-xs md:text-sm">
+            Probudi svoju moć
+          </p>
+        </FadeIn>
 
-        <h1 className="mt-4 text-5xl md:text-8xl font-bold text-yellow-300 leading-tight font-heading">
-  <span className="block md:inline">Alexogoth</span>{" "}
-  <span className="block md:inline">Akademija</span>
-</h1>
+        <FadeIn delay={0.3}>
+          <h1 className="mt-4 text-5xl md:text-8xl font-bold text-yellow-300 leading-tight font-heading">
+            <span className="block md:inline">Alexogoth</span>{" "}
+            <span className="block md:inline">Akademija</span>
+          </h1>
+        </FadeIn>
 
-        <p className="mt-5 md:mt-8 text-base md:text-2xl text-gray-300 max-w-2xl mx-auto leading-8 md:leading-10">
-          Najveće putovanje nije kroz svijet,
-          <br />
-          već kroz spoznaju sebe.
-        </p>
+        <FadeIn delay={0.45}>
+          <p className="mt-5 md:mt-8 text-base md:text-2xl text-gray-300 max-w-2xl mx-auto leading-8 md:leading-10">
+            Najveće putovanje nije kroz svijet,
+            <br />
+            već kroz spoznaju sebe.
+          </p>
+        </FadeIn>
 
-        <div className="mt-10 md:mt-14 flex flex-col sm:flex-row justify-center items-center gap-5">
+        <FadeIn delay={0.6}>
+          <div className="mt-10 md:mt-14 flex flex-col sm:flex-row justify-center items-center gap-5">
 
-          <Link
-            href="/#courses"
-            className="w-full sm:w-auto sm:min-w-[220px] bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-8 py-4 rounded-xl transition duration-300 shadow-lg shadow-yellow-500/30 text-center"
-          >
-            Istraži kurseve
-          </Link>
+            <Link
+              href="/#courses"
+              className="w-full sm:w-auto sm:min-w-[220px] bg-yellow-400 hover:bg-yellow-300 text-black font-bold px-8 py-4 rounded-xl transition duration-300 shadow-lg shadow-yellow-500/30 text-center"
+            >
+              Istraži kurseve
+            </Link>
 
-          <Link
-            href="/#about"
-            className="w-full sm:w-auto sm:min-w-[220px] border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-bold px-8 py-4 rounded-xl transition duration-300 text-center"
-          >
-            O Akademiji
-          </Link>
+            <Link
+              href="/#about"
+              className="w-full sm:w-auto sm:min-w-[220px] border border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-bold px-8 py-4 rounded-xl transition duration-300 text-center"
+            >
+              O Akademiji
+            </Link>
 
-        </div>
+          </div>
+        </FadeIn>
 
       </div>
 
